@@ -34,9 +34,16 @@ extension PlanetDetailsView {
 
 private extension Int {
   var toKilometers: String {
-    return Measurement(
-      value: Double(self),
-      unit: UnitLength.kilometers
-    ).formatted(.measurement(width: .abbreviated, usage: .road))
+    let measurement = Measurement(value: Double(self), unit: UnitLength.kilometers)
+    
+    if measurement.value >= 1_000_000_000 {
+      let billions = measurement.value / 1_000_000_000
+      return "\(billions.formatted(.number.precision(.fractionLength(1)))) billion \(measurement.unit.symbol)"
+    } else if measurement.value >= 1_000_000 {
+      let millions = measurement.value / 1_000_000
+      return "\(millions.formatted(.number.precision(.fractionLength(1)))) million \(measurement.unit.symbol)"
+    } else {
+      return measurement.formatted(.measurement(width: .abbreviated, usage: .road))
+    }
   }
 }
