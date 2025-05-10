@@ -31,6 +31,25 @@ struct PlanetsListView: View {
     .navigationDestination(for: Planet.self, destination: { item in
       PlanetDetailsView(model: .init(planet: item))
     })
+    .toolbar {
+      ToolbarItem(placement: .primaryAction) {
+        Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
+          DisclosureGroup {
+            Button("Name", systemImage: "textformat.alt") {
+              model.sort(by: .name)
+            }
+            Button("Diameter", systemImage: "circle.dashed") {
+              model.sort(by: .diameter)
+            }
+            Button("Distance to Sun", systemImage: "sun.max") {
+              model.sort(by: .distance)
+            }
+          } label: {
+            Text("Sort")
+          }
+        }
+      }
+    }
   }
 }
 
@@ -38,10 +57,34 @@ extension PlanetsListView {
   @Observable
   final class Model {
     private(set) var planets: [Planet]
-
+    private(set) var sortOption: SortOption = .name
+    
     init(planets: [Planet]) {
       self.planets = planets
+      sortPlanets()
     }
+    
+    func sort(by option: SortOption) {
+      sortOption = option
+      sortPlanets()
+    }
+    
+    private func sortPlanets() {
+      switch sortOption {
+      case .name:
+        planets.sort { $0.title < $1.title }
+      case .diameter:
+        planets.sort { $0.diameterKm > $1.diameterKm }
+      case .distance:
+        planets.sort { $0.distanceFromSunKm < $1.distanceFromSunKm }
+      }
+    }
+  }
+  
+  enum SortOption {
+    case name
+    case diameter
+    case distance
   }
 }
 
