@@ -34,7 +34,7 @@ struct PlanetsListView: View {
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
-          DisclosureGroup {
+          Menu("Sort") {
             Button("Name", systemImage: "textformat.alt") {
               model.sort(by: .name)
             }
@@ -44,8 +44,6 @@ struct PlanetsListView: View {
             Button("Distance to Sun", systemImage: "sun.max") {
               model.sort(by: .distance)
             }
-          } label: {
-            Text("Sort")
           }
         }
       }
