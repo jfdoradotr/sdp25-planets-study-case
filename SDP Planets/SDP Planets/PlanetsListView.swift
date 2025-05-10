@@ -27,6 +27,7 @@ struct PlanetsListView: View {
       }
     }
     .listStyle(.plain)
+    .animation(.smooth, value: model.planets)
     .navigationTitle("Planets")
     .navigationDestination(for: Planet.self, destination: { item in
       PlanetDetailsView(model: .init(planet: item))
@@ -63,8 +64,10 @@ extension PlanetsListView {
     }
     
     func sort(by option: SortOption) {
-      sortOption = option
-      sortPlanets()
+      withAnimation {
+        sortOption = option
+        sortPlanets()
+      }
     }
     
     private func sortPlanets() {
