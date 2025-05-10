@@ -30,7 +30,7 @@ struct PlanetsListView: View {
     .listStyle(.plain)
     .navigationTitle("Planets")
     .navigationDestination(for: Planet.self, destination: { item in
-      PlanetDetailsView(planet: item)
+      PlanetDetailsView(model: .init(planet: item))
     })
   }
 }

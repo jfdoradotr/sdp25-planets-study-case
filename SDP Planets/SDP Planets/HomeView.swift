@@ -76,7 +76,7 @@ struct HomeView: View {
     }
     .navigationTitle("Home")
     .navigationDestination(for: Planet.self) { planet in
-      PlanetDetailsView(planet: planet)
+      PlanetDetailsView(model: .init(planet: planet))
     }
   }
 

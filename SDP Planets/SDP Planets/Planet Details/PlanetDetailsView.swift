@@ -12,7 +12,11 @@
 import SwiftUI
 
 struct PlanetDetailsView: View {
-  let planet: Planet
+  @State private var model: PlanetDetailsView.Model
+
+  init(model: PlanetDetailsView.Model) {
+    self.model = model
+  }
 
   var body: some View {
     Form {
@@ -21,7 +25,7 @@ struct PlanetDetailsView: View {
       diameterSectionView
       distanceSectionView
     }
-    .navigationTitle(planet.title)
+    .navigationTitle(model.name)
     .navigationBarTitleDisplayMode(.inline)
   }
 }
@@ -31,7 +35,7 @@ struct PlanetDetailsView: View {
 private extension PlanetDetailsView {
   var imageSectionView: some View {
     Section {
-      Image(planet.name)
+      Image(model.resourceName)
         .resizable()
         .scaledToFit()
     }
@@ -40,13 +44,13 @@ private extension PlanetDetailsView {
 
   var descriptionSectionView: some View {
     Section("Description") {
-      Text(planet.description)
+      Text(model.description)
     }
   }
 
   var diameterSectionView: some View {
     Section {
-      Text(Measurement(value: Double(planet.diameterKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
+      Text(model.diameter)
     } header: {
       Label("Diameter (km)", systemImage: "circle.lefthalf.filled.righthalf.striped.horizontal")
     }
@@ -54,7 +58,7 @@ private extension PlanetDetailsView {
 
   var distanceSectionView: some View {
     Section {
-      Text(Measurement(value: Double(planet.distanceFromSunKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
+      Text(model.distance)
     } header: {
       HStack {
         Label("Distance (km)", systemImage: "ruler")
@@ -69,6 +73,6 @@ private extension PlanetDetailsView {
 
 #Preview {
   NavigationStack {
-    PlanetDetailsView(planet: .preview)
+    PlanetDetailsView(model: .init(planet: .preview))
   }
 }
