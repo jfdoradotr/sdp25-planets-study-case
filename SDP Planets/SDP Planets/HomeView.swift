@@ -92,6 +92,23 @@ struct HomeView: View {
   }
 }
 
+struct HorizontalGradientScrollableView<Content: View>: View {
+  var height: CGFloat = 200
+  @ViewBuilder let content: Content
+
+  var body: some View {
+    ScrollView(.horizontal) {
+      HStack {
+        content
+      }
+    }
+    .safeAreaPadding()
+    .scrollIndicators(.hidden)
+    .frame(height: height)
+    .background(LinearGradient(colors: [.blue, .purple, .red, .orange, .yellow], startPoint: .leading, endPoint: .trailing))
+  }
+}
+
 struct PlanetCardView: View {
   private let planet: Planet
 
@@ -114,5 +131,13 @@ struct PlanetCardView: View {
 #Preview {
   NavigationStack {
     HomeView(planets: .preview)
+  }
+}
+
+#Preview("Scrollable Linear") {
+  HorizontalGradientScrollableView {
+    Text("Hello")
+    Text("Hello")
+    Text("Hello")
   }
 }
