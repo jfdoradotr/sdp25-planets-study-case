@@ -53,7 +53,7 @@ struct HomeView: View {
         } currentValueLabel: {
           HStack {
             Text("The distance is about")
-            Text(Measurement(value: Double(distance), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
+            Text(distance.toKilometers)
           }
           .opacity(distance == 0 ? 0 : 1)
         } minimumValueLabel: {
