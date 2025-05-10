@@ -9,7 +9,6 @@
 //  https://acoding.academy/formaciones/swift-developer-program/
 //
 
-
 import SwiftUI
 
 struct PlanetsListView: View {
