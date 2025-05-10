@@ -27,23 +27,15 @@ struct HomeView: View {
 
   var body: some View {
     VStack {
-      ScrollView(.horizontal) {
-        HStack {
-          ForEach(planets, id: \.name) { planet in
-            NavigationLink(value: planet) {
-              PlanetCardView(planet: planet)
-                .padding(8)
-            }
-            .buttonStyle(PlainButtonStyle())
+      HorizontalGradientScrollableView {
+        ForEach(planets, id: \.name) { planet in
+          NavigationLink(value: planet) {
+            PlanetCardView(planet: planet)
+              .padding(8)
           }
+          .buttonStyle(.plain)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 8)
       }
-      .scrollIndicators(.hidden)
-      .frame(height: 200)
-      .background(LinearGradient(colors: [.blue, .purple, .red, .orange, .yellow], startPoint: .leading, endPoint: .trailing))
-      .clipped()
       .padding(.bottom, 16)
 
       Group {
@@ -92,41 +84,7 @@ struct HomeView: View {
   }
 }
 
-struct HorizontalGradientScrollableView<Content: View>: View {
-  var height: CGFloat = 200
-  @ViewBuilder let content: Content
-
-  var body: some View {
-    ScrollView(.horizontal) {
-      HStack {
-        content
-      }
-    }
-    .safeAreaPadding()
-    .scrollIndicators(.hidden)
-    .frame(height: height)
-    .background(LinearGradient(colors: [.blue, .purple, .red, .orange, .yellow], startPoint: .leading, endPoint: .trailing))
-  }
-}
-
-struct PlanetCardView: View {
-  private let planet: Planet
-
-  init(planet: Planet) {
-    self.planet = planet
-  }
-
-  var body: some View {
-    VStack {
-      Image(planet.name)
-        .resizable()
-        .scaledToFit()
-        .frame(width: 100, height: 100)
-      Text(planet.name.capitalized)
-        .font(.headline)
-    }
-  }
-}
+// MARK: - Previews
 
 #Preview {
   NavigationStack {
