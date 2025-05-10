@@ -21,7 +21,7 @@ struct ContentView: View {
         }
         Tab("Planets", systemImage: "list.bullet") {
           NavigationStack {
-            PlanetsListView(planets: .preview)
+            PlanetsListView(model: .init(planets: .preview))
           }
         }
         Tab("Info", systemImage: "info") {

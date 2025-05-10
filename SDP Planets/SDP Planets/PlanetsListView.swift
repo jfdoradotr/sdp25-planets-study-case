@@ -12,18 +12,17 @@
 import SwiftUI
 
 struct PlanetsListView: View {
-  @State private var planets: [Planet]
+  @State var model: PlanetsListView.Model
 
-  init(planets: [Planet]) {
-    self.planets = planets
+  init(model: PlanetsListView.Model) {
+    self.model = model
   }
 
   var body: some View {
     List {
-      ForEach(planets, id: \.name) { planet in
+      ForEach(model.planets, id: \.name) { planet in
         NavigationLink(value: planet) {
           Row(imageName: planet.name, name: planet.title)
-
         }
       }
     }
@@ -32,6 +31,17 @@ struct PlanetsListView: View {
     .navigationDestination(for: Planet.self, destination: { item in
       PlanetDetailsView(model: .init(planet: item))
     })
+  }
+}
+
+extension PlanetsListView {
+  @Observable
+  final class Model {
+    private(set) var planets: [Planet]
+
+    init(planets: [Planet]) {
+      self.planets = planets
+    }
   }
 }
 
@@ -55,7 +65,7 @@ private extension PlanetsListView {
 
 #Preview {
   NavigationStack {
-    PlanetsListView(planets: .preview)
+    PlanetsListView(model: .init(planets: .preview))
   }
 }
 
