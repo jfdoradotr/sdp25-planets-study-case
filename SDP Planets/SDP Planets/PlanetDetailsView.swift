@@ -16,34 +16,56 @@ struct PlanetDetailsView: View {
 
   var body: some View {
     Form {
-      Section {
-        Image(planet.name)
-          .resizable()
-          .scaledToFit()
-      }
-      .listRowBackground(Color.clear)
-      Section("Description") {
-        Text(planet.description)
-      }
-      Section {
-        Text(Measurement(value: Double(planet.diameterKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
-      } header: {
-        Label("Diameter (km)", systemImage: "circle.lefthalf.filled.righthalf.striped.horizontal")
-      }
-      Section {
-        Text(Measurement(value: Double(planet.distanceFromSunKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
-      } header: {
-        HStack {
-          Label("Distance (km)", systemImage: "ruler")
-        }
-      } footer: {
-        Text("This is the distance from the sun")
-      }
+      imageSectionView
+      descriptionSectionView
+      diameterSectionView
+      distanceSectionView
     }
     .navigationTitle(planet.title)
     .navigationBarTitleDisplayMode(.inline)
   }
 }
+
+// MARK: - Views
+
+private extension PlanetDetailsView {
+  var imageSectionView: some View {
+    Section {
+      Image(planet.name)
+        .resizable()
+        .scaledToFit()
+    }
+    .listRowBackground(Color.clear)
+  }
+
+  var descriptionSectionView: some View {
+    Section("Description") {
+      Text(planet.description)
+    }
+  }
+
+  var diameterSectionView: some View {
+    Section {
+      Text(Measurement(value: Double(planet.diameterKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
+    } header: {
+      Label("Diameter (km)", systemImage: "circle.lefthalf.filled.righthalf.striped.horizontal")
+    }
+  }
+
+  var distanceSectionView: some View {
+    Section {
+      Text(Measurement(value: Double(planet.distanceFromSunKm), unit: UnitLength.kilometers), format: .measurement(width: .abbreviated, usage: .road))
+    } header: {
+      HStack {
+        Label("Distance (km)", systemImage: "ruler")
+      }
+    } footer: {
+      Text("This is the distance from the sun")
+    }
+  }
+}
+
+// MARK: - Previews
 
 #Preview {
   NavigationStack {
