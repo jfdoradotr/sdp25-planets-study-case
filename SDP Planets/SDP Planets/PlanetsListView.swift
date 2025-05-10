@@ -36,14 +36,12 @@ struct PlanetsListView: View {
       ToolbarItem(placement: .primaryAction) {
         Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
           Menu("Sort") {
-            Button("Name", systemImage: "textformat.alt") {
-              model.sort(by: .name)
-            }
-            Button("Diameter", systemImage: "circle.dashed") {
-              model.sort(by: .diameter)
-            }
-            Button("Distance to Sun", systemImage: "sun.max") {
-              model.sort(by: .distance)
+            ForEach([SortOption.name, .diameter, .distance], id: \.self) { option in
+              Button {
+                model.sort(by: option)
+              } label: {
+                Label(option.title, systemImage: option.icon)
+              }
             }
           }
         }
@@ -73,7 +71,7 @@ extension PlanetsListView {
     private func sortPlanets() {
       switch sortOption {
       case .name:
-        planets.sort { $0.title < $1.title }
+        planets.sort { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
       case .diameter:
         planets.sort { $0.diameterKm > $1.diameterKm }
       case .distance:
@@ -86,6 +84,22 @@ extension PlanetsListView {
     case name
     case diameter
     case distance
+    
+    var title: String {
+      switch self {
+      case .name: "Name"
+      case .diameter: "Diameter"
+      case .distance: "Distance to Sun"
+      }
+    }
+    
+    var icon: String {
+      switch self {
+      case .name: "textformat.alt"
+      case .diameter: "circle.dashed"
+      case .distance: "sun.max"
+      }
+    }
   }
 }
 
