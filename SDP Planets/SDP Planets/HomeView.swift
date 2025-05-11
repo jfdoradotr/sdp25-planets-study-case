@@ -12,8 +12,7 @@
 import SwiftUI
 
 struct HomeView: View {
-  @State private var distance: Int = 0
-  @State private var isGaugeFilled: Bool = false
+  @State private var distanceEarthFromSun: Int?
 
   private let planets: [Planet]
 
@@ -21,8 +20,9 @@ struct HomeView: View {
     self.planets = planets.sorted { $0.distanceFromSunKm > $1.distanceFromSunKm }
   }
 
-  private var highestDistance: Int {
-    planets.sorted { $0.distanceFromSunKm < $1.distanceFromSunKm }.last?.distanceFromSunKm ?? 0
+  private var distanceEarthFromSunText: String? {
+    guard let distanceEarthFromSun else { return nil }
+    return "The distance is about \(distanceEarthFromSun.toKilometers)"
   }
 
   var body: some View {
@@ -39,20 +39,10 @@ struct HomeView: View {
       .padding(.bottom, 16)
 
       Group {
-        Text("The distance between the Sun and Earth is")
-          .font(.headline)
-        Gauge(value: isGaugeFilled ? 100 : 0, in: 0...100) {
-        } currentValueLabel: {
-          HStack {
-            Text("The distance is about")
-            Text(distance.toKilometers)
-          }
-          .opacity(distance == 0 ? 0 : 1)
-        } minimumValueLabel: {
-          Text("☀️")
-        } maximumValueLabel: {
-          Text("🌎")
-        }      .padding(.bottom, 16)
+        PlanetDistanceGaugeView(
+          headerText: "The distance between the Sun and Earth is",
+          distanceText: distanceEarthFromSunText
+        )
 
         Button("Show me the distance") {
           withAnimation {
@@ -78,8 +68,7 @@ struct HomeView: View {
     }.first
 
     if let earth {
-      distance = earth.distanceFromSunKm
-      isGaugeFilled = true
+      distanceEarthFromSun = earth.distanceFromSunKm
     }
   }
 }
