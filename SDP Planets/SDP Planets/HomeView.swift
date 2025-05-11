@@ -38,7 +38,7 @@ struct HomeView: View {
       }
       .padding(.bottom, 16)
 
-      Group {
+      VStack(spacing: 16) {
         PlanetDistanceGaugeView(
           headerText: "The distance between the Sun and Earth is",
           distanceText: distanceEarthFromSunText
@@ -53,7 +53,7 @@ struct HomeView: View {
         .font(.headline)
         .clipShape(.capsule)
       }
-      .padding(.horizontal)
+      .safeAreaPadding(.horizontal)
       Spacer()
     }
     .navigationTitle("Home")
