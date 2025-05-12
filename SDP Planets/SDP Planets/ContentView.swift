@@ -16,7 +16,7 @@ struct ContentView: View {
       TabView {
         Tab("Home", systemImage: "house") {
           NavigationStack {
-            HomeView(planets: .preview)
+            HomeView(model: .init(planets: .preview))
           }
         }
         Tab("Planets", systemImage: "list.bullet") {

@@ -12,23 +12,16 @@
 import SwiftUI
 
 struct HomeView: View {
-  @State private var distanceEarthFromSun: Int?
+  @State private var model: HomeView.Model
 
-  private let planets: [Planet]
-
-  init(planets: [Planet]) {
-    self.planets = planets.sorted { $0.distanceFromSunKm > $1.distanceFromSunKm }
-  }
-
-  private var distanceEarthFromSunText: String? {
-    guard let distanceEarthFromSun else { return nil }
-    return "The distance is about \(distanceEarthFromSun.toKilometers)"
+  init(model: HomeView.Model) {
+    self.model = model
   }
 
   var body: some View {
     VStack {
       HorizontalGradientScrollableView {
-        ForEach(planets, id: \.name) { planet in
+        ForEach(model.planetsSortedByDistance, id: \.name) { planet in
           NavigationLink(value: planet) {
             PlanetCardView(planet: planet)
               .padding(8)
@@ -41,12 +34,12 @@ struct HomeView: View {
       VStack(spacing: 16) {
         PlanetDistanceGaugeView(
           headerText: "The distance between the Sun and Earth is",
-          distanceText: distanceEarthFromSunText
+          distanceText: model.distanceEarthFromSun
         )
 
         Button("Show me the distance") {
           withAnimation {
-            calculateDistance()
+            model.showMeTheDistance()
           }
         }
         .buttonStyle(.borderedProminent)
@@ -61,23 +54,13 @@ struct HomeView: View {
       PlanetDetailsView(model: .init(planet: planet))
     }
   }
-
-  private func calculateDistance() {
-    let earth = planets.filter { planet in
-      planet.name == "earth"
-    }.first
-
-    if let earth {
-      distanceEarthFromSun = earth.distanceFromSunKm
-    }
-  }
 }
 
 // MARK: - Previews
 
 #Preview {
   NavigationStack {
-    HomeView(planets: .preview)
+    HomeView(model: .init(planets: .preview))
   }
 }
 
